@@ -1,0 +1,41 @@
+{% extends "basic.html" %}
+{% load static %}
+
+
+{% block headerBar %}
+{% include "otherRole/headerOtherRole.html"%}
+{% endblock headerBar%}
+{% block sidebar %}
+{% include "otherRole/navBarOtherRole.html"%}
+{% endblock sidebar%}
+{% block content%}
+
+<div> 
+    <h1 style="text-align: center; color: rgb(105,190,40);"> Timeline </h1>
+</div>
+<style>
+    h1 {
+        text-align: center;
+    }
+</style>
+<table>
+    <thead>
+        <tr>
+            <th>Sujet</th>
+            <th>Date de début</th>
+            <th>Date de fin</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data %}
+            <tr>
+                <td>{{ row.titre_sujet }}</td>
+                <td>{{ row.start_date }}</td>
+                <td>{{ row.end_date }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </tbody>
+</table>
+
+{% endblock content%}

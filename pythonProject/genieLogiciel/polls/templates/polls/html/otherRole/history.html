@@ -1,0 +1,49 @@
+{% extends "basic.html" %}
+{% load static %}
+
+{% block headerBar %}
+{% include "otherRole/headerOtherRole.html"%}
+{% endblock headerBar%}
+
+{% block sidebar %}
+{% include "otherRole/navBarOtherRole.html"%}
+{% endblock sidebar%}
+
+{% block content%}
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>Historique</title>
+    </head>
+    <div>
+        <h1 style="text-align: center; color: rgb(105,190,40);">Historique</h1>
+    </div>
+    <body>
+        <table>
+            <thead>
+            <tr>
+            <th>Année académique</th>
+            <th>Nom cours</th>
+            <th>Titre du sujet</th>
+            <th>Description sujet</th>
+            <th>Nom de l'étudiant</th>
+            <th>Nom du professeur</th>
+        </thead>
+        <tbody>
+            {% for query in queryset%}
+                <tr>
+                <td>{{query.annee_academique}}</td>
+                <td>{{query.nom_cours}}</td>
+                <td>{{query.titre_sujet}}</td>
+                <td>{{query.description_sujet}}</td>
+                <td>{{query.nom_complet_etudiant}}</td>
+                <td>{{query.nom_complet_professeur}}</td>
+            {%endfor%}
+        </tbody>
+    </table>
+    
+    
+</body>
+
+
+{% endblock content%}

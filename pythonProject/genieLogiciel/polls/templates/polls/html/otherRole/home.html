@@ -1,0 +1,25 @@
+{% extends "otherRole/otherRoleTemplate.html" %}
+
+{% block content%}
+    <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="col-8"></div>
+        <div class="col-12">
+        <div class="row">
+            <!-- code html + django pour l'affichage des cartes-->
+            {% for cour in cours %}
+                <div class="justify-content-between w-25 vh-100">
+                <div class="card text-center myCard">
+                    <div class="card-body myBodyCard">
+                        <a href="./{{ cour.idue.idue }}/topics"> <h5 class="card-title">{{cour.nom}}</h5>
+                        <p class="card-text">{{cour.idue.idue}}</p>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    </div>
+    <div class="col-auto"></div>
+{% endblock content %}
