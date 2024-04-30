@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views, courseViews, adminViews
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path("course/", views.home, name="home"),
@@ -34,3 +35,5 @@ urlpatterns = [
 
 
 ]
+
+urlpatterns += staticfiles_urlpatterns()

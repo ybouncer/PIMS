@@ -10,9 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+import dj_database_url # importation de la librairie dj_database_url
+
 from pathlib import Path
 
 from dotenv import load_dotenv
+import dj_database_url
+
+
+import sys
+print(sys.executable)
+
 
 # création d'un fichier .env propre à chacun
 load_dotenv(dotenv_path="C:\\Users\\matth\\AppData\\Roaming\\JetBrains\\PyCharm2024.1\\scratches\\scratch.env")
@@ -77,17 +85,26 @@ WSGI_APPLICATION = 'genieLogiciel.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 AUTH_USER_MODEL = 'polls.Personne'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'admin',
-        'USER': 'admin',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
-        'PORT': '5432'
+# Use the DATABASE_URL environment variable if it's available
+DATABASE_URL = os.getenv('DATABASE_URL')
 
+if DATABASE_URL:
+    # If the DATABASE_URL environment variable is set, use it to set the DATABASES setting
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL)
     }
-}
+else:
+    # If the DATABASE_URL environment variable is not set, use the local database settings
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'admin',
+            'USER': 'admin',
+            'PASSWORD': 'admin',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
