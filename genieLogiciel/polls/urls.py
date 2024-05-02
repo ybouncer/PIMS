@@ -31,6 +31,7 @@ urlpatterns = [
     path("sujet/reservation/<int:idsujet>", courseViews.reservationValidation, name="reservation"),
     path("sujet/reservation/confirmation/<int:idsujet>",courseViews.reservationConfirmation,name="confirmation"),
     path("sujet/history/", courseViews.vue_historique, name="vue_historique"),
+    path("sujet/history/<int:annee>", courseViews.vue_historiqueAnnee, name="vue_historaieAnnee"),
     path("sujet/cours_timeline/", courseViews.query_vue_historique, name="cours_timeline_view")
 
 

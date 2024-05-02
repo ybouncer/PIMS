@@ -5,6 +5,8 @@ from django.shortcuts import render
 from multiprocessing import Value
 from django.db.models import F
 from django.db.models.functions import Concat
+from django.db.models import CharField, Value
+
 
 from django.http import JsonResponse
 
@@ -260,6 +262,8 @@ def reservationConfirmation(request, idsujet):
         return redirect('../../../home')
     else:
         return redirect('../../../ok')
+    
+
 
 @login_required(login_url='/polls')
 def vue_historique(request):
@@ -270,15 +274,39 @@ def vue_historique(request):
             nom_cours=F('nom'),
             titre_sujet=F('sujet__titre'),
             description_sujet=F('sujet__descriptif'),
-            nom_complet_etudiant=Concat('idetudiant__idpersonne__nom', 'idetudiant__idpersonne__prenom'),
-            nom_complet_professeur=Concat('sujet__idprof__idpersonne__nom', 'sujet__idprof__idpersonne__prenom'),
+            nom_complet_etudiant=Concat('idetudiant__idpersonne__nom', Value(' '), 'idetudiant__idpersonne__prenom', output_field=CharField()),
+            nom_complet_professeur=Concat('sujet__idprof__idpersonne__nom', Value(' '), 'sujet__idprof__idpersonne__prenom', output_field=CharField()),
         )
-        .order_by('sujet__idperiode__annee', 'nom')
+        .order_by('sujet__idperiode__annee')
     )
     queries  = []
     for query in queryset:
         queries.append(query)
-    return render(request,"otherRole/history.html",context={'queryset':queries})
+    annees = []
+    for query in queryset:
+        annees.append(int(query['annee_academique']))
+    annees = remove_duplicate(annees)
+    
+    return render(request,"otherRole/history.html",context={'queryset':queries,'annees':annees})
+@login_required(login_url='/polls')
+def vue_historiqueAnnee(request, annee): 
+    queryset = (
+    Cours.objects
+    .filter(sujet__idperiode__annee=annee)
+    .values(
+        annee_academique=F('sujet__idperiode__annee'),
+        nom_cours=F('nom'),
+        titre_sujet=F('sujet__titre'),
+        description_sujet=F('sujet__descriptif'),
+        nom_complet_etudiant=Concat('idetudiant__idpersonne__nom',  Value(' '),'idetudiant__idpersonne__prenom', output_field=CharField()),
+        nom_complet_professeur=Concat('sujet__idprof__idpersonne__nom',  Value(' '),'sujet__idprof__idpersonne__prenom', output_field=CharField()),
+    )
+    .order_by('sujet__idperiode__annee')
+    )
+    querries = []
+    for querry in queryset: 
+        querries.append(querry)
+    return render(request,"otherRole/history.html",context={'queryset':querries})
 
 
 @login_required(login_url='/polls')
@@ -293,3 +321,7 @@ def query_vue_historique(request):
     
     print(result)
     return render(request, 'otherRole/cours_timeline.html', {'data': result})
+
+
+def remove_duplicate(liste):
+    return list(set(liste))

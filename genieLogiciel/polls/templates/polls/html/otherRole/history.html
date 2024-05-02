@@ -18,6 +18,7 @@
     <div>
         <h1 style="text-align: center; color: rgb(105,190,40);">Historique</h1>
     </div>
+    {% if annees|length == 0 %}
     <body>
         <table>
             <thead>
@@ -41,9 +42,30 @@
             {%endfor%}
         </tbody>
     </table>
-    
-    
-</body>
+    {%else%}
+    <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="col-8">
+            <div class="row">
+            <!-- code html + django pour l'affichage des cartes-->
+            {% for annee in annees %}
+            <div class="justify-content-between w-25 vh-100">
+                <div class="card text-center myCard">
+                    <div class="card-body myBodyCard">
+                        <a href="./{{annee}}"> <h5 class="card-title">{{annee}}</h5>
+                        </a>
+                    </div>
 
+                </div>
+            </div>
+            {% endfor %}
+            </div>
+    </div>
+    </body>
 
+    <div class="col-auto">
+    {%endif%}
+    </div>
+    
+
+</body> 
 {% endblock content%}
